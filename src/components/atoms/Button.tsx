@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, TextStyle} from 'react-native';
 import React from 'react';
 import {theme} from '../../assets/designSystem';
 import TextInter from './TextInter';
@@ -6,10 +6,23 @@ import TextInter from './TextInter';
 const Button: React.FC<{
   label: string;
   backgroundColor?: string;
-}> = ({label, backgroundColor}) => {
+  customLabelStyles?: TextStyle | TextStyle[];
+  styles?: TextStyle | TextStyle[];
+}> = ({label, backgroundColor, customLabelStyles, styles}) => {
+  const labelStylesProps = Array.isArray(customLabelStyles)
+    ? Object.assign({}, ...customLabelStyles)
+    : customLabelStyles;
+
+  const customStyles = Array.isArray(styles)
+    ? Object.assign({}, ...styles)
+    : styles;
+
   return (
-    <TouchableOpacity style={buttonStyles(backgroundColor).button}>
-      <TextInter style={labelStyles().label}>{label}</TextInter>
+    <TouchableOpacity
+      style={[buttonStyles(backgroundColor).button, customStyles]}>
+      <TextInter style={[labelStyles().label, labelStylesProps]}>
+        {label}
+      </TextInter>
     </TouchableOpacity>
   );
 };
