@@ -3,7 +3,8 @@ export const palette = {
   black: '#000000',
   dark: '#2C2822',
   white: '#FFFFFF',
-  gray1: '#B4B4B4',
+  gray1: '#DCD7D1',
+  gray2: '#B4B4B4',
 };
 
 export const theme = {

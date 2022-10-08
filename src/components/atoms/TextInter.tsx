@@ -20,5 +20,6 @@ export default TextInter;
 const styles = StyleSheet.create({
   text: {
     fontFamily: theme.fonts.inter.regular,
+    color: theme.colors.fontDark,
   },
 });

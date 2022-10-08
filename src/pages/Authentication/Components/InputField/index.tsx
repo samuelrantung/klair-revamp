@@ -19,7 +19,7 @@ const TextInputComponent: React.FC<{
 
   return (
     <View style={styles.textInputContainer}>
-      <TextInter style={styles.textInputLabel}>{label}</TextInter>
+      {label && <TextInter style={styles.textInputLabel}>{label}</TextInter>}
       {isPassword ? (
         <View style={styles.textInputPasswordContainer}>
           <TextInput
@@ -30,7 +30,12 @@ const TextInputComponent: React.FC<{
           <EyeIcon onPress={() => eyeOnPress()} />
         </View>
       ) : (
-        <TextInput style={styles.textInputField} placeholder={placeholder} />
+        <View style={styles.textInputPasswordContainer}>
+          <TextInput
+            style={styles.textInputPasswordField}
+            placeholder={placeholder}
+          />
+        </View>
       )}
     </View>
   );

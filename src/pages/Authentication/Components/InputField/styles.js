@@ -1,6 +1,5 @@
+import {StyleSheet} from 'react-native';
 import {theme} from '../../../../assets/designSystem';
-
-const {StyleSheet} = require('react-native');
 
 export const styles = StyleSheet.create({
   textInputContainer: {
