@@ -12,6 +12,7 @@ export const theme = {
     primary: palette.gold,
     fontDark: palette.dark,
     borderGray: palette.gray1,
+    white: palette.white,
   },
 
   button: {
