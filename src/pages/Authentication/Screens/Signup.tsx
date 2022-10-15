@@ -85,7 +85,7 @@ const Signup = () => {
             error={emailError}
             setError={setEmailError}
             rules={{
-              required: 'Email is required!',
+              required: 'Email is required',
               pattern: {
                 value: /\b[\w\\.+-]+@[\w\\.-]+\.\w{2,4}\b/,
                 message: 'Wrong email format',
@@ -100,7 +100,7 @@ const Signup = () => {
             placeholder="your password"
             error={passwordError}
             setError={setPasswordError}
-            rules={{required: 'Password is required!'}}
+            rules={{required: 'Password is required'}}
           />
           <Gap height={10} />
           <Button

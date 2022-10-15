@@ -59,7 +59,7 @@ const Signin = () => {
           error={emailError}
           setError={setEmailError}
           rules={{
-            required: 'Email is required!',
+            required: 'Email is required',
             pattern: {
               value: /\b[\w\\.+-]+@[\w\\.-]+\.\w{2,4}\b/,
               message: 'Wrong email format',
@@ -75,7 +75,7 @@ const Signin = () => {
           placeholder="your password"
           isPassword={true}
           error={passwordError}
-          rules={{required: 'Password is required!'}}
+          rules={{required: 'Password is required'}}
           setError={setPasswordError}
         />
 

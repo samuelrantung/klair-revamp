@@ -89,7 +89,7 @@ const ControlledInput = (props: TextInputComponentProps) => {
             </View>
           </View>
           <TextInter style={styles.errorMessage}>
-            {error && hasError ? error : formState.errors[name]?.message}{' '}
+            {error ? error : hasError && formState.errors[name]?.message}{' '}
           </TextInter>
         </>
       ) : (
