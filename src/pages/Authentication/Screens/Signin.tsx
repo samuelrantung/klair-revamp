@@ -1,11 +1,5 @@
-import {
-  StyleSheet,
-  Touchable,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {theme} from '../../../assets/designSystem';
 import Gap from '../../../components/atoms/Gap';
 import TextInputComponent from '../Components/InputField';
@@ -15,10 +9,37 @@ import SocialSignInButton from '../Components/SocialSignInButton';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../types';
+import {
+  FormProvider,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
+
+type FormValues = {
+  email: string;
+  password: string;
+};
 
 const Signin = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  // const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const {...methods} = useForm<FormValues>();
+
+  const handleSignIn: SubmitHandler<FormValues> = (data: FormValues) => {
+    console.log('clicked', data);
+    setEmailError('error dari api');
+  };
+
+  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
+    errors.email?.message && setEmailError(errors.email.message);
+    errors.password?.message && setPasswordError(errors.password.message);
+    console.error('form error', errors);
+  };
 
   return (
     <View style={styles.container}>
@@ -29,21 +50,42 @@ const Signin = () => {
         <TextInter style={styles.subTitle}>Let's Be Clear</TextInter>
       </View>
 
-      <TextInputComponent label="Email" placeholder="example@gmail.com" />
+      <FormProvider {...methods}>
+        <TextInputComponent
+          name="email"
+          label="Email"
+          placeholder="example@gmail.com"
+          keyboardType="email-address"
+          error={emailError}
+          setError={setEmailError}
+          rules={{
+            required: 'Email is required!',
+            pattern: {
+              value: /\b[\w\\.+-]+@[\w\\.-]+\.\w{2,4}\b/,
+              message: 'Wrong email format',
+            },
+          }}
+        />
 
-      <Gap height={24} />
+        <Gap height={5} />
 
-      <TextInputComponent
-        label="Password"
-        placeholder="your password"
-        isPassword={true}
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
-      />
+        <TextInputComponent
+          name="password"
+          label="Password"
+          placeholder="your password"
+          isPassword={true}
+          error={passwordError}
+          rules={{required: 'Password is required!'}}
+          setError={setPasswordError}
+        />
 
-      <Gap height={24} />
+        <Gap height={10} />
 
-      <Button label="Sign In" />
+        <Button
+          onPress={methods.handleSubmit(handleSignIn, onError)}
+          label="Sign In"
+        />
+      </FormProvider>
 
       <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
         <TextInter style={styles.signupText}>
@@ -64,12 +106,11 @@ export default Signin;
 
 const styles = StyleSheet.create({
   container: {
-    fontFamily: 'Inter-Bold',
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 40,
+    paddingTop: 24,
   },
   logoContainer: {
     backgroundColor: 'yellow',
@@ -78,8 +119,8 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: '100%',
-    marginTop: 24,
-    marginBottom: 34,
+    marginTop: 16,
+    marginBottom: 12,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
@@ -97,8 +138,9 @@ const styles = StyleSheet.create({
 
   signupText: {
     color: theme.colors.fontDark,
-    marginTop: 8,
+    marginTop: 4,
     fontFamily: theme.fonts.inter.semiBold,
+    fontSize: 12,
   },
   socialContainer: {
     flex: 1,
