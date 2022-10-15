@@ -103,22 +103,28 @@ const Signup = () => {
             rules={{required: 'Password is required'}}
           />
           <Gap height={10} />
-          <Button
-            onPress={methods.handleSubmit(handleSignUp, onError)}
-            label="Sign Up"
-          />
-          <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
-            <TextInter style={styles.signinText}>
-              Don't Have Any Account? Sign In
-            </TextInter>
-          </TouchableOpacity>
-        </FormProvider>
-      </View>
 
-      <View style={styles.socialContainer}>
-        <SocialSignInButton type="google" />
-        <Gap height={12} />
-        <SocialSignInButton type="facebook" />
+          <View style={styles.buttonContainer}>
+            <View style={styles.signButtonContainer}>
+              <Button
+                onPress={methods.handleSubmit(handleSignUp, onError)}
+                label="Sign Up"
+              />
+
+              <Gap height={5} />
+
+              <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+                <TextInter style={styles.signinText}>
+                  Don't Have Any Account? Sign In
+                </TextInter>
+              </TouchableOpacity>
+            </View>
+
+            <SocialSignInButton type="google" />
+            <Gap height={12} />
+            <SocialSignInButton type="facebook" />
+          </View>
+        </FormProvider>
       </View>
     </View>
   );
@@ -130,7 +136,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingTop: 32,
+    paddingVertical: 27,
     backgroundColor: theme.colors.background,
   },
   title: {
@@ -146,6 +152,7 @@ const styles = StyleSheet.create({
   formContainer: {
     width: '100%',
     alignItems: 'center',
+    flex: 1,
   },
   nameFieldContainer: {
     flexDirection: 'row',
@@ -161,9 +168,13 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.inter.semiBold,
     fontSize: 12,
   },
-  socialContainer: {
+  buttonContainer: {
     flex: 1,
     width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+  },
+  signButtonContainer: {
+    alignItems: 'center',
+    flex: 1,
   },
 });

@@ -1,4 +1,10 @@
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {theme} from '../../../assets/designSystem';
 import Gap from '../../../components/atoms/Gap';
@@ -42,9 +48,8 @@ const Signin = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.logoContainer} />
-
       <View style={styles.titleContainer}>
         <TextInter style={styles.title}>Welcome To Klair</TextInter>
         <TextInter style={styles.subTitle}>Let's Be Clear</TextInter>
@@ -67,8 +72,6 @@ const Signin = () => {
           }}
         />
 
-        <Gap height={5} />
-
         <TextInputComponent
           name="password"
           label="Password"
@@ -81,24 +84,28 @@ const Signin = () => {
 
         <Gap height={10} />
 
-        <Button
-          onPress={methods.handleSubmit(handleSignIn, onError)}
-          label="Sign In"
-        />
+        <View style={styles.buttonContainer}>
+          <View style={styles.signButtonContainer}>
+            <Button
+              onPress={methods.handleSubmit(handleSignIn, onError)}
+              label="Sign In"
+            />
+
+            <Gap height={5} />
+
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <TextInter style={styles.signupText}>
+                Don't Have Any Account? Sign Up
+              </TextInter>
+            </TouchableOpacity>
+          </View>
+          <Gap height={'25%'} />
+          <SocialSignInButton type="google" />
+          <Gap height={24} />
+          <SocialSignInButton type="facebook" />
+        </View>
       </FormProvider>
-
-      <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-        <TextInter style={styles.signupText}>
-          Don't Have Any Account? Sign Up
-        </TextInter>
-      </TouchableOpacity>
-
-      <View style={styles.socialContainer}>
-        <SocialSignInButton type="google" />
-        <Gap height={24} />
-        <SocialSignInButton type="facebook" />
-      </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -110,7 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     paddingHorizontal: 16,
-    paddingTop: 24,
+    paddingVertical: 24,
   },
   logoContainer: {
     backgroundColor: 'yellow',
@@ -142,9 +149,12 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.inter.semiBold,
     fontSize: 12,
   },
-  socialContainer: {
+  buttonContainer: {
     flex: 1,
     width: '100%',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
+  },
+  signButtonContainer: {
+    alignItems: 'center',
   },
 });
