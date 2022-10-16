@@ -5,6 +5,9 @@ export const palette = {
   white: '#FFFFFF',
   gray1: '#DCD7D1',
   gray2: '#B4B4B4',
+  red: '#FF5947',
+  transparent: 'rgba(0, 0, 0, 0)',
+  softRed: '#FFDEDA',
 };
 
 export const theme = {
@@ -14,6 +17,9 @@ export const theme = {
     fontDark: palette.dark,
     borderGray: palette.gray1,
     white: palette.white,
+    error: palette.red,
+    errorSecondary: palette.softRed,
+    transparent: palette.transparent,
   },
 
   button: {

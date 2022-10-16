@@ -9,6 +9,7 @@ import {
   UseControllerProps,
   useFormContext,
 } from 'react-hook-form';
+import {theme} from '../../../../assets/designSystem';
 
 /*
  *
@@ -26,6 +27,15 @@ interface TextInputComponentProps extends TextInputProps, UseControllerProps {
   defaultValue?: string;
   setError?: Dispatch<SetStateAction<string>>;
 }
+
+const eyeOnPress = (
+  setShowPassword: Dispatch<SetStateAction<boolean>>,
+  showPassword: boolean,
+) => {
+  if (setShowPassword) {
+    setShowPassword(!showPassword);
+  }
+};
 
 const ControlledInput = (props: TextInputComponentProps) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,12 +56,6 @@ const ControlledInput = (props: TextInputComponentProps) => {
   } = props;
 
   const {field} = useController({name, rules, defaultValue});
-
-  const eyeOnPress = () => {
-    if (setShowPassword) {
-      setShowPassword(!showPassword);
-    }
-  };
 
   const hasError = Boolean(formState?.errors[name]);
   useEffect(() => {
@@ -84,6 +88,7 @@ const ControlledInput = (props: TextInputComponentProps) => {
                 placeholder={placeholder}
                 onChangeText={field.onChange}
                 value={field.value}
+                placeholderTextColor={theme.colors.borderGray}
                 {...inputProps}
               />
             </View>
@@ -110,9 +115,13 @@ const ControlledInput = (props: TextInputComponentProps) => {
                 secureTextEntry={!showPassword}
                 onChangeText={field.onChange}
                 value={field.value}
+                placeholderTextColor={theme.colors.borderGray}
                 {...inputProps}
               />
-              <EyeIcon style={styles.eye} onPress={() => eyeOnPress()} />
+              <EyeIcon
+                style={styles.eye}
+                onPress={() => eyeOnPress(setShowPassword, showPassword)}
+              />
             </View>
           </View>
           <TextInter style={styles.errorMessage}>{error}</TextInter>

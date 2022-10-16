@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "615214109443",
+    "project_id": "klair-5dfd2",
+    "storage_bucket": "klair-5dfd2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615214109443:android:0dd6cc1a40c1abd7110f36",
+        "android_client_info": {
+          "package_name": "com.klair"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615214109443-5kf48v68394h6qdr2bsoj2cih8e0ijv5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABsqfrW5ZA3Cg_UPkvlohKand8HJre0R0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615214109443-5kf48v68394h6qdr2bsoj2cih8e0ijv5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

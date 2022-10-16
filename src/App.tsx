@@ -1,20 +1,26 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import Router from './router';
+import {theme} from './assets/designSystem';
+import auth from '@react-native-firebase/auth';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Router />
-    </NavigationContainer>
-    // <View>
-    //   <Text>App</Text>
-    // </View>
+    <SafeAreaView style={styles.container}>
+      <NavigationContainer>
+        <Router />
+      </NavigationContainer>
+    </SafeAreaView>
   );
 };
 
 export default App;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+});

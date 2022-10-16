@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <Firebase.h> // Firebase
 
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
@@ -16,6 +17,9 @@
 
 #import <react/config/ReactNativeConfig.h>
 
+
+
+
 static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 @interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
@@ -31,6 +35,8 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [FIRApp configure];
+  
   RCTAppSetupPrepareApp(application);
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
@@ -58,6 +64,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   return YES;
+  
 }
 
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.

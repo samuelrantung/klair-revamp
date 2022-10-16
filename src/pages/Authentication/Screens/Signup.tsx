@@ -1,4 +1,5 @@
 import {
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -21,12 +22,37 @@ import {
   SubmitHandler,
   useForm,
 } from 'react-hook-form';
+import auth from '@react-native-firebase/auth';
 
 type FormValues = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
+};
+
+const handleSignUp: SubmitHandler<FormValues> = (
+  data: FormValues,
+  navigation,
+) => {
+  console.log('clicked', data);
+  auth()
+    .createUserWithEmailAndPassword(data.email, data.password)
+    .then(() => {
+      console.log('User account created & signed in!');
+      navigation.navigate('Home');
+    })
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+
+      console.error(error);
+    });
 };
 
 const Signup = () => {
@@ -36,11 +62,6 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState('');
 
   const {...methods} = useForm<FormValues>();
-
-  const handleSignUp: SubmitHandler<FormValues> = (data: FormValues) => {
-    console.log('clicked', data);
-    setEmailError('error dari api');
-  };
 
   const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
     errors.email?.message && setEmailError(errors.email.message);
@@ -107,7 +128,10 @@ const Signup = () => {
           <View style={styles.buttonContainer}>
             <View style={styles.signButtonContainer}>
               <Button
-                onPress={methods.handleSubmit(handleSignUp, onError)}
+                onPress={methods.handleSubmit(
+                  data => handleSignUp(data, navigation),
+                  onError,
+                )}
                 label="Sign Up"
               />
 

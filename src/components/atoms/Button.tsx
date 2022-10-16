@@ -1,14 +1,24 @@
-import {Text, TouchableOpacity, StyleSheet, TextStyle} from 'react-native';
+import {
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextStyle,
+  TouchableOpacityProps,
+} from 'react-native';
 import React from 'react';
 import {theme} from '../../assets/designSystem';
 import TextInter from './TextInter';
 
-const Button: React.FC<{
+interface ButtonProps extends TouchableOpacityProps {
   label: string;
   backgroundColor?: string;
   customLabelStyles?: TextStyle | TextStyle[];
   styles?: TextStyle | TextStyle[];
-}> = ({label, backgroundColor, customLabelStyles, styles}) => {
+}
+
+const Button = (props: ButtonProps) => {
+  const {label, backgroundColor, customLabelStyles, styles, ...touchableProps} =
+    props;
   const labelStylesProps = Array.isArray(customLabelStyles)
     ? Object.assign({}, ...customLabelStyles)
     : customLabelStyles;
@@ -19,7 +29,9 @@ const Button: React.FC<{
 
   return (
     <TouchableOpacity
-      style={[buttonStyles(backgroundColor).button, customStyles]}>
+      // onPress={onPress}
+      style={[buttonStyles(backgroundColor).button, customStyles]}
+      {...touchableProps}>
       <TextInter style={[labelStyles().label, labelStylesProps]}>
         {label}
       </TextInter>

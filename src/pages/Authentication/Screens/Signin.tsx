@@ -1,11 +1,5 @@
-import {
-  KeyboardAvoidingView,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useState} from 'react';
 import {theme} from '../../../assets/designSystem';
 import Gap from '../../../components/atoms/Gap';
 import TextInputComponent from '../Components/InputField';
@@ -21,10 +15,19 @@ import {
   SubmitHandler,
   useForm,
 } from 'react-hook-form';
+import auth from '@react-native-firebase/auth';
 
 type FormValues = {
   email: string;
   password: string;
+};
+
+const handleSignIn: SubmitHandler<FormValues> = (
+  data: FormValues,
+  navigation,
+) => {
+  console.log('clicked', data);
+  navigation.navigate('Home');
 };
 
 const Signin = () => {
@@ -36,11 +39,6 @@ const Signin = () => {
 
   const {...methods} = useForm<FormValues>();
 
-  const handleSignIn: SubmitHandler<FormValues> = (data: FormValues) => {
-    console.log('clicked', data);
-    setEmailError('error dari api');
-  };
-
   const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
     errors.email?.message && setEmailError(errors.email.message);
     errors.password?.message && setPasswordError(errors.password.message);
@@ -48,7 +46,7 @@ const Signin = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.logoContainer} />
       <View style={styles.titleContainer}>
         <TextInter style={styles.title}>Welcome To Klair</TextInter>
@@ -87,7 +85,10 @@ const Signin = () => {
         <View style={styles.buttonContainer}>
           <View style={styles.signButtonContainer}>
             <Button
-              onPress={methods.handleSubmit(handleSignIn, onError)}
+              onPress={methods.handleSubmit(
+                data => handleSignIn(data, navigation),
+                onError,
+              )}
               label="Sign In"
             />
 
@@ -105,7 +106,7 @@ const Signin = () => {
           <SocialSignInButton type="facebook" />
         </View>
       </FormProvider>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -114,11 +115,12 @@ export default Signin;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background,
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 24,
   },
+
   logoContainer: {
     backgroundColor: 'yellow',
     width: 100,
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     width: '100%',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
   signButtonContainer: {
     alignItems: 'center',
