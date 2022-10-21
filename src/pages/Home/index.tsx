@@ -3,6 +3,7 @@ import React from 'react';
 import {Button} from '../../components';
 import auth from '@react-native-firebase/auth';
 import {useNavigation} from '@react-navigation/native';
+import {getData} from '../../utils/asyncStorage';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -18,9 +19,13 @@ const Home = () => {
     <SafeAreaView>
       <View>
         <Text>Home</Text>
-        <Button onPress={() => logout()} label="logout">
-          hehe
-        </Button>
+        <Button onPress={() => logout()} label="logout" />
+        <Button
+          onPress={() => {
+            getData('userAuthState').then(res => console.log('res ', res));
+          }}
+          label="check state"
+        />
       </View>
     </SafeAreaView>
   );

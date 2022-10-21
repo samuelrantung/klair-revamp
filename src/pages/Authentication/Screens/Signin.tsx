@@ -1,4 +1,4 @@
-import {SafeAreaView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {theme} from '../../../assets/designSystem';
 import Gap from '../../../components/atoms/Gap';
@@ -7,42 +7,46 @@ import Button from '../../../components/atoms/Button';
 import TextInter from '../../../components/atoms/TextInter';
 import SocialSignInButton from '../Components/SocialSignInButton';
 import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../../types';
 import {
   FormProvider,
   SubmitErrorHandler,
   SubmitHandler,
   useForm,
 } from 'react-hook-form';
-import auth from '@react-native-firebase/auth';
-
-type FormValues = {
-  email: string;
-  password: string;
-};
-
-const handleSignIn: SubmitHandler<FormValues> = (
-  data: FormValues,
-  navigation,
-) => {
-  console.log('clicked', data);
-  navigation.navigate('Home');
-};
+import {getData} from '../../../utils/asyncStorage';
+import {FormValues} from '../Types';
+import {handleGoogleSignIn, handleSignIn} from '../Controller';
 
 const Signin = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  // const [showPassword, setShowPassword] = useState<boolean>(false);
+  const navigation = useNavigation<any>();
+  const {...methods} = useForm<FormValues>(); // react-hook-form methods
 
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const {...methods} = useForm<FormValues>();
+  const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
+    // Clear error message when click sign
+    setEmailError('');
+    setPasswordError('');
+    handleSignIn(data, navigation).catch((error: string) => {
+      // Handle error code
+      if (error === 'auth/user-not-found') {
+        setEmailError('User not found');
+      }
 
-  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
+      if (error === 'auth/invalid-email') {
+        setEmailError('User not found');
+      }
+
+      if (error === 'auth/wrong-password') {
+        setPasswordError('Wrong password');
+      }
+    });
+  };
+
+  const onError: SubmitErrorHandler<FormValues> = errors => {
     errors.email?.message && setEmailError(errors.email.message);
     errors.password?.message && setPasswordError(errors.password.message);
-    console.error('form error', errors);
   };
 
   return (
@@ -85,10 +89,7 @@ const Signin = () => {
         <View style={styles.buttonContainer}>
           <View style={styles.signButtonContainer}>
             <Button
-              onPress={methods.handleSubmit(
-                data => handleSignIn(data, navigation),
-                onError,
-              )}
+              onPress={methods.handleSubmit(data => onSubmit(data), onError)}
               label="Sign In"
             />
 
@@ -101,9 +102,21 @@ const Signin = () => {
             </TouchableOpacity>
           </View>
           <Gap height={'25%'} />
-          <SocialSignInButton type="google" />
+          <SocialSignInButton
+            onPress={() =>
+              handleGoogleSignIn().catch(e => console.log('error', e))
+            }
+            type="google"
+          />
           <Gap height={24} />
-          <SocialSignInButton type="facebook" />
+          {Platform.OS === 'ios' && (
+            <SocialSignInButton
+              onPress={() => {
+                getData('userAuthState').then(res => console.log('res', res));
+              }}
+              type="apple"
+            />
+          )}
         </View>
       </FormProvider>
     </View>
@@ -154,7 +167,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     width: '100%',
-    justifyContent: 'space-between',
   },
   signButtonContainer: {
     alignItems: 'center',

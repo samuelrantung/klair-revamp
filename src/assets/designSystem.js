@@ -20,6 +20,7 @@ export const theme = {
     error: palette.red,
     errorSecondary: palette.softRed,
     transparent: palette.transparent,
+    black: palette.black,
   },
 
   button: {

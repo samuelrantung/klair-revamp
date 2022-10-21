@@ -29,7 +29,6 @@ const Button = (props: ButtonProps) => {
 
   return (
     <TouchableOpacity
-      // onPress={onPress}
       style={[buttonStyles(backgroundColor).button, customStyles]}
       {...touchableProps}>
       <TextInter style={[labelStyles().label, labelStylesProps]}>

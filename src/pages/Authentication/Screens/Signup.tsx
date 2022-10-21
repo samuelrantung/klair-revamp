@@ -1,28 +1,22 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {Button, Gap, TextInter} from '../../../components';
 import {theme} from '../../../assets/designSystem';
 import TextInputComponent from '../Components/InputField';
-import text from '../../../utils/text';
 import {useNavigation} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../../types';
 import SocialSignInButton from '../Components/SocialSignInButton';
 import {
-  Controller,
   FormProvider,
   SubmitErrorHandler,
   SubmitHandler,
   useForm,
 } from 'react-hook-form';
-import auth from '@react-native-firebase/auth';
+import {
+  handleAppleSignIn,
+  handleGoogleSignIn,
+  handleSignUp,
+} from '../Controller';
+import {AppleButton} from '@invertase/react-native-apple-authentication';
 
 type FormValues = {
   firstName: string;
@@ -31,39 +25,34 @@ type FormValues = {
   password: string;
 };
 
-const handleSignUp: SubmitHandler<FormValues> = (
-  data: FormValues,
-  navigation,
-) => {
-  console.log('clicked', data);
-  auth()
-    .createUserWithEmailAndPassword(data.email, data.password)
-    .then(() => {
-      console.log('User account created & signed in!');
-      navigation.navigate('Home');
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-
-      console.error(error);
-    });
-};
-
 const Signup = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<any>();
+  const {...methods} = useForm<FormValues>(); // react-hook-form methods
 
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
-  const {...methods} = useForm<FormValues>();
+  const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
+    // Clear error message when click sign
+    setEmailError('');
+    setPasswordError('');
+    handleSignUp(data, navigation).catch(error => {
+      // Handle error code
+      if (error === 'auth/email-already-in-use') {
+        setEmailError('Email already in use');
+      }
 
-  const onError: SubmitErrorHandler<FormValues> = (errors, e) => {
+      if (error === 'auth/invalid-email') {
+        setEmailError('Invalid email');
+      }
+
+      if (error === 'auth/weak-password') {
+        setPasswordError('Weak password');
+      }
+    });
+  };
+
+  const onError: SubmitErrorHandler<FormValues> = errors => {
     errors.email?.message && setEmailError(errors.email.message);
     errors.password?.message && setPasswordError(errors.password.message);
     console.error('form error', errors);
@@ -128,10 +117,7 @@ const Signup = () => {
           <View style={styles.buttonContainer}>
             <View style={styles.signButtonContainer}>
               <Button
-                onPress={methods.handleSubmit(
-                  data => handleSignUp(data, navigation),
-                  onError,
-                )}
+                onPress={methods.handleSubmit(data => onSubmit(data), onError)}
                 label="Sign Up"
               />
 
@@ -144,9 +130,19 @@ const Signup = () => {
               </TouchableOpacity>
             </View>
 
-            <SocialSignInButton type="google" />
+            <SocialSignInButton
+              onPress={() =>
+                handleGoogleSignIn().catch(e => console.log('error', e))
+              }
+              type="google"
+            />
             <Gap height={12} />
-            <SocialSignInButton type="facebook" />
+            {Platform.OS === 'ios' && (
+              <SocialSignInButton
+                onPress={() => handleAppleSignIn()}
+                type="apple"
+              />
+            )}
           </View>
         </FormProvider>
       </View>

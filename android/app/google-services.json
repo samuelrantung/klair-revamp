@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "615214109443-pi37v99kklham754al8r416m26jl45hh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.klair",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "615214109443-u3mgndhgvnrgvk5marcm0fifb79oc25i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.klair",
+            "certificate_hash": "cf4cd180c1e39e23358071191c5fb576308773a7"
+          }
+        },
+        {
           "client_id": "615214109443-5kf48v68394h6qdr2bsoj2cih8e0ijv5.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +45,13 @@
             {
               "client_id": "615214109443-5kf48v68394h6qdr2bsoj2cih8e0ijv5.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "615214109443-r7h4ogbljm2osscnhq50gcbte92f7iq0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Klair"
+              }
             }
           ]
         }

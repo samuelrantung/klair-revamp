@@ -1,12 +1,18 @@
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import 'react-native-gesture-handler';
+import {SafeAreaView, StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Router from './router';
 import {theme} from './assets/designSystem';
-import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const App = () => {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '615214109443-5kf48v68394h6qdr2bsoj2cih8e0ijv5.apps.googleusercontent.com',
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <NavigationContainer>

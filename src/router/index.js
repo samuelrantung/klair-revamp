@@ -4,44 +4,46 @@ import Signin from '../pages/Authentication/Screens/Signin';
 import Signup from '../pages/Authentication/Screens/Signup';
 import Home from '../pages/Home';
 import auth from '@react-native-firebase/auth';
+import {useNavigation} from '@react-navigation/native';
+import {InitializeFirebase} from '../controller/firebase';
+import {storeData} from '../utils/asyncStorage';
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
-  // Set an initializing state whilst Firebase connects
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const navigation = useNavigation();
 
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
+  // Listening on auth state
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    auth().onAuthStateChanged(userState => {
+      if (userState) {
+        storeData('userAuthState', userState);
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Home'}],
+        });
+      }
+
+      if (!userState) {
+        storeData('userAuthState', '');
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Signin'}],
+        });
+      }
+    });
   }, []);
-
-  if (initializing) return null;
-
-  // if (!user) {
-  //   return (
-  //     <View>
-  //       <Text>Login</Text>
-  //     </View>
-  //   );
-  // }
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}
-      initialRouteName={!user ? 'Signin' : 'Home'}>
+      }}>
       <Stack.Screen name="Signin" component={Signin} />
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
+    // initialRouteName={!user ? 'Signin' : 'Home'}>
   );
 };
 

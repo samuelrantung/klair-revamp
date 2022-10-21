@@ -1,17 +1,27 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  TouchableOpacityProps,
+  View,
+} from 'react-native';
 import React from 'react';
 import {TextInter} from '../../../../components';
 import GoogleIcon from '../../../../assets/icons/google-icon.svg';
 import FacebookIcon from '../../../../assets/icons/facebook-icon.svg';
+import AppleIcon from '../../../../assets/icons/apple-icon.svg';
 import {theme} from '../../../../assets/designSystem';
 
-const SocialSignInButton: React.FC<{
+interface ButtonProps extends TouchableOpacityProps {
   type: string;
-}> = ({type}) => {
+}
+
+const SocialSignInButton = (props: ButtonProps) => {
+  const {type, ...touchableProps} = props;
   return (
     <View>
       {type === 'google' && (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} {...touchableProps}>
           <View style={styles.icon}>
             <GoogleIcon />
           </View>
@@ -20,11 +30,24 @@ const SocialSignInButton: React.FC<{
         </TouchableOpacity>
       )}
       {type === 'facebook' && (
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} {...touchableProps}>
           <View style={styles.icon}>
             <FacebookIcon />
           </View>
           <TextInter style={styles.label}>Facebook</TextInter>
+          <View style={styles.icon} />
+        </TouchableOpacity>
+      )}
+      {type === 'apple' && (
+        <TouchableOpacity
+          style={[styles.button, {backgroundColor: theme.colors.black}]}
+          {...touchableProps}>
+          <View style={styles.icon}>
+            <AppleIcon />
+          </View>
+          <TextInter style={[styles.label, {color: theme.colors.white}]}>
+            Apple
+          </TextInter>
           <View style={styles.icon} />
         </TouchableOpacity>
       )}
