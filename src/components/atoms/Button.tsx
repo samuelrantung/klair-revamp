@@ -4,6 +4,8 @@ import {
   StyleSheet,
   TextStyle,
   TouchableOpacityProps,
+  ActivityIndicator,
+  View,
 } from 'react-native';
 import React from 'react';
 import {theme} from '../../assets/designSystem';
@@ -14,48 +16,42 @@ interface ButtonProps extends TouchableOpacityProps {
   backgroundColor?: string;
   customLabelStyles?: TextStyle | TextStyle[];
   styles?: TextStyle | TextStyle[];
+  isLoading?: boolean;
 }
 
 const Button = (props: ButtonProps) => {
-  const {label, backgroundColor, customLabelStyles, styles, ...touchableProps} =
-    props;
-  const labelStylesProps = Array.isArray(customLabelStyles)
-    ? Object.assign({}, ...customLabelStyles)
-    : customLabelStyles;
-
-  const customStyles = Array.isArray(styles)
-    ? Object.assign({}, ...styles)
-    : styles;
+  const {label, style, isLoading = false, ...touchableProps} = props;
 
   return (
-    <TouchableOpacity
-      style={[buttonStyles(backgroundColor).button, customStyles]}
-      {...touchableProps}>
-      <TextInter style={[labelStyles().label, labelStylesProps]}>
-        {label}
-      </TextInter>
+    <TouchableOpacity style={[styles.buttonStyles, style]} {...touchableProps}>
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color={theme.colors.white} />
+        </View>
+      ) : (
+        <TextInter style={styles.label}>{label}</TextInter>
+      )}
     </TouchableOpacity>
   );
 };
 
 export default Button;
 
-const buttonStyles = (backgroundColor: string = '#FFB319') =>
-  StyleSheet.create({
-    button: {
-      backgroundColor: backgroundColor,
-      width: '100%',
-      borderRadius: 8,
-      alignItems: 'center',
-      paddingVertical: 14,
-    },
-  });
-
-const labelStyles = () =>
-  StyleSheet.create({
-    label: {
-      color: theme.colors.white,
-      fontSize: 16,
-      fontFamily: theme.fonts.inter.semiBold,
-    },
-  });
+const styles = StyleSheet.create({
+  buttonStyles: {
+    backgroundColor: theme.colors.primary,
+    width: '100%',
+    borderRadius: 8,
+    alignItems: 'center',
+    paddingVertical: 14,
+  },
+  label: {
+    color: theme.colors.white,
+    fontSize: 16,
+    fontFamily: theme.fonts.inter.semiBold,
+    lineHeight: 22,
+  },
+  loadingContainer: {
+    height: 22,
+  },
+});

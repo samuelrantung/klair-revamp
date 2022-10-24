@@ -1,18 +1,20 @@
-import {StyleSheet, Text, TextStyle} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import React from 'react';
 import {theme} from '../../assets/designSystem';
+import {TextProps} from 'react-native';
 
-type CustomTextProps = {
-  style?: TextStyle | TextStyle[];
-  children: any;
-};
+interface CustomTextProps extends TextProps {
+  children?: any;
+}
 
-const TextInter: React.FC<CustomTextProps> = ({children, style}) => {
-  const passedStyles = Array.isArray(style)
-    ? Object.assign({}, ...style)
-    : style;
+const TextInter: React.FC<CustomTextProps> = (props: CustomTextProps) => {
+  const {children, style, ...textProps} = props;
 
-  return <Text style={[styles.text, {...passedStyles}]}>{children}</Text>;
+  return (
+    <Text style={[styles.text, style]} {...textProps}>
+      {children}
+    </Text>
+  );
 };
 
 export default TextInter;

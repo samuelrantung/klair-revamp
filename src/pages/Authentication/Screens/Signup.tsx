@@ -17,6 +17,7 @@ import {
   handleSignUp,
 } from '../Controller';
 import {AppleButton} from '@invertase/react-native-apple-authentication';
+import Loading from '../../../components/molecules/Loading';
 
 type FormValues = {
   firstName: string;
@@ -32,24 +33,32 @@ const Signup = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const [loading, setLoading] = useState(false);
+
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
+    setLoading(true);
+
     // Clear error message when click sign
     setEmailError('');
     setPasswordError('');
-    handleSignUp(data, navigation).catch(error => {
-      // Handle error code
-      if (error === 'auth/email-already-in-use') {
-        setEmailError('Email already in use');
-      }
+    handleSignUp(data, navigation)
+      .then(() => setLoading(false))
+      .catch(error => {
+        setLoading(false);
 
-      if (error === 'auth/invalid-email') {
-        setEmailError('Invalid email');
-      }
+        // Handle error code
+        if (error === 'auth/email-already-in-use') {
+          setEmailError('Email already in use');
+        }
 
-      if (error === 'auth/weak-password') {
-        setPasswordError('Weak password');
-      }
-    });
+        if (error === 'auth/invalid-email') {
+          setEmailError('Invalid email');
+        }
+
+        if (error === 'auth/weak-password') {
+          setPasswordError('Weak password');
+        }
+      });
   };
 
   const onError: SubmitErrorHandler<FormValues> = errors => {
@@ -59,94 +68,101 @@ const Signup = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInter style={styles.title}>
-        One Step Closer{'\n'}To Make Things Clear
-      </TextInter>
-      <TextInter style={styles.subText}>Let’s Us Know You Better</TextInter>
-      <Gap height={28} />
-      <View style={styles.formContainer}>
-        <FormProvider {...methods}>
-          <View style={styles.nameFieldContainer}>
-            <View style={styles.fieldRow}>
-              <TextInputComponent
-                name="firstName"
-                label="First Name"
-                placeholder="your name"
-                rules={{required: 'Required'}}
-              />
+    <>
+      <View style={styles.container}>
+        <TextInter style={styles.title}>
+          One Step Closer{'\n'}To Make Things Clear
+        </TextInter>
+        <TextInter style={styles.subText}>Let’s Us Know You Better</TextInter>
+        <Gap height={28} />
+        <View style={styles.formContainer}>
+          <FormProvider {...methods}>
+            <View style={styles.nameFieldContainer}>
+              <View style={styles.fieldRow}>
+                <TextInputComponent
+                  name="firstName"
+                  label="First Name"
+                  placeholder="your name"
+                  rules={{required: 'Required'}}
+                />
+              </View>
+              <Gap width={14} />
+              <View style={styles.fieldRow}>
+                <TextInputComponent
+                  name="lastName"
+                  label="Last Name"
+                  placeholder="your name"
+                  rules={{required: 'Required'}}
+                />
+              </View>
             </View>
-            <Gap width={14} />
-            <View style={styles.fieldRow}>
-              <TextInputComponent
-                name="lastName"
-                label="Last Name"
-                placeholder="your name"
-                rules={{required: 'Required'}}
-              />
-            </View>
-          </View>
-          <Gap height={10} />
-          <TextInputComponent
-            name="email"
-            label="Email"
-            keyboardType="email-address"
-            placeholder="example@gmail.com"
-            error={emailError}
-            setError={setEmailError}
-            rules={{
-              required: 'Email is required',
-              pattern: {
-                value: /\b[\w\\.+-]+@[\w\\.-]+\.\w{2,4}\b/,
-                message: 'Wrong email format',
-              },
-            }}
-          />
-          <Gap height={10} />
-          <TextInputComponent
-            name="password"
-            label="Password"
-            isPassword={true}
-            placeholder="your password"
-            error={passwordError}
-            setError={setPasswordError}
-            rules={{required: 'Password is required'}}
-          />
-          <Gap height={10} />
-
-          <View style={styles.buttonContainer}>
-            <View style={styles.signButtonContainer}>
-              <Button
-                onPress={methods.handleSubmit(data => onSubmit(data), onError)}
-                label="Sign Up"
-              />
-
-              <Gap height={5} />
-
-              <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
-                <TextInter style={styles.signinText}>
-                  Don't Have Any Account? Sign In
-                </TextInter>
-              </TouchableOpacity>
-            </View>
-
-            <SocialSignInButton
-              onPress={() =>
-                handleGoogleSignIn().catch(e => console.log('error', e))
-              }
-              type="google"
+            <Gap height={10} />
+            <TextInputComponent
+              name="email"
+              label="Email"
+              keyboardType="email-address"
+              placeholder="example@gmail.com"
+              error={emailError}
+              setError={setEmailError}
+              rules={{
+                required: 'Email is required',
+                pattern: {
+                  value: /\b[\w\\.+-]+@[\w\\.-]+\.\w{2,4}\b/,
+                  message: 'Wrong email format',
+                },
+              }}
             />
-            <Gap height={12} />
-            {Platform.OS === 'ios' && (
+            <Gap height={10} />
+            <TextInputComponent
+              name="password"
+              label="Password"
+              isPassword={true}
+              placeholder="your password"
+              error={passwordError}
+              setError={setPasswordError}
+              rules={{required: 'Password is required'}}
+            />
+            <Gap height={10} />
+
+            <View style={styles.buttonContainer}>
+              <View style={styles.signButtonContainer}>
+                <Button
+                  onPress={methods.handleSubmit(
+                    data => onSubmit(data),
+                    onError,
+                  )}
+                  label="Sign Up"
+                  isLoading={loading}
+                />
+
+                <Gap height={5} />
+
+                <TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+                  <TextInter style={styles.signinText}>
+                    Don't Have Any Account? Sign In
+                  </TextInter>
+                </TouchableOpacity>
+              </View>
+
               <SocialSignInButton
-                onPress={() => handleAppleSignIn()}
-                type="apple"
+                onPress={() =>
+                  handleGoogleSignIn().catch(e => console.log('error', e))
+                }
+                type="google"
               />
-            )}
-          </View>
-        </FormProvider>
+              <Gap height={12} />
+              {Platform.OS === 'ios' && (
+                <SocialSignInButton
+                  onPress={() => handleAppleSignIn()}
+                  type="apple"
+                />
+              )}
+            </View>
+          </FormProvider>
+        </View>
       </View>
-    </View>
+      {loading && <Loading />}
+    </>
   );
 };
 
