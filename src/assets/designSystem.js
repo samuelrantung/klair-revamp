@@ -8,6 +8,8 @@ export const palette = {
   red: '#FF5947',
   transparent: 'rgba(0, 0, 0, 0)',
   softRed: '#FFDEDA',
+  gray3: '#878178',
+  beige: '#FFE1A3',
 };
 
 export const theme = {
@@ -21,6 +23,8 @@ export const theme = {
     errorSecondary: palette.softRed,
     transparent: palette.transparent,
     black: palette.black,
+    fontGray: palette.gray3,
+    beige: palette.beige,
   },
 
   button: {
@@ -80,5 +84,15 @@ export const theme = {
        */
       thin: 'Inter-Thin',
     },
+  },
+
+  cardShadow: {
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    elevation: 2,
   },
 };
