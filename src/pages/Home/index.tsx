@@ -5,6 +5,7 @@ import {
   View,
   Image,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -14,6 +15,8 @@ import {theme} from '../../assets/designSystem';
 import DragAndDropCard from './components/DragAndDropCard';
 import HeaderCard from './components/HeaderCard';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import FAB from '../../components/atoms/FloatingActionButton/FAB';
+import SubButton from '../../components/atoms/FloatingActionButton/SubButton.js';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -44,6 +47,12 @@ const Home = () => {
         /> */}
         </View>
       </DragAndDropCard>
+      <FAB>
+        <SubButton onPress={() => Alert.alert('Pressed 1!')} label="1" />
+        <SubButton onPress={() => Alert.alert('Pressed 2!')} label="2" />
+        <SubButton onPress={() => Alert.alert('Pressed 3!')} label="3" />
+        <SubButton onPress={() => Alert.alert('Pressed 4!')} label="4" />
+      </FAB>
     </View>
   );
 };
