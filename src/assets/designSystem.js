@@ -1,5 +1,6 @@
 export const palette = {
   gold: '#FFB319',
+  lightGold: '#F2CC7E',
   black: '#000000',
   dark: '#2C2822',
   white: '#FFFFFF',
@@ -9,12 +10,14 @@ export const palette = {
   transparent: 'rgba(0, 0, 0, 0)',
   softRed: '#FFDEDA',
   gray3: '#878178',
-  beige: '#FFE1A3',
+  beige: '#FFF0D1',
+  gray4: '#DFEFE6',
 };
 
 export const theme = {
   colors: {
     background: palette.white,
+    backgroundLight: palette.white,
     primary: palette.gold,
     fontDark: palette.dark,
     borderGray: palette.gray1,
@@ -25,6 +28,9 @@ export const theme = {
     black: palette.black,
     fontGray: palette.gray3,
     beige: palette.beige,
+    lightGold: palette.lightGold,
+    fontLight: palette.white,
+    success5: palette.gray4,
   },
 
   button: {

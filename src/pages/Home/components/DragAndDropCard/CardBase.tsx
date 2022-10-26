@@ -6,6 +6,7 @@ import {
 } from 'react-native-draggable-flatlist';
 import {Item} from './types';
 import {theme} from '../../../../assets/designSystem';
+import DragIcon from '../../../../assets/icons/drag-icon.svg';
 
 const CardBase: FC<PropsWithChildren<RenderItemParams<Item>>> = ({
   drag,
@@ -18,15 +19,20 @@ const CardBase: FC<PropsWithChildren<RenderItemParams<Item>>> = ({
         style={[
           styles.card,
           theme.cardShadow,
+          // eslint-disable-next-line react-native/no-inline-styles
           {
-            backgroundColor: isActive
-              ? theme.colors.borderGray
-              : theme.colors.white,
+            backgroundColor: theme.colors.backgroundLight,
+            borderColor: isActive
+              ? theme.colors.primary
+              : theme.colors.transparent,
+            borderWidth: 1,
           },
         ]}>
         {children}
         <TouchableWithoutFeedback onLongPress={drag}>
-          <View style={styles.dragSection} />
+          <View style={styles.dragSection}>
+            <DragIcon />
+          </View>
         </TouchableWithoutFeedback>
       </View>
     </ScaleDecorator>
@@ -44,10 +50,10 @@ const styles = StyleSheet.create({
   },
 
   dragSection: {
-    width: 20,
-    height: 20,
-    backgroundColor: 'yellow',
+    padding: 4,
     position: 'absolute',
     right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

@@ -17,7 +17,7 @@ const BankCard: FC<ItemProps> = ({index, animationValue}) => {
     const backgroundColor = interpolateColor(
       animationValue.value,
       [-1, 0, 1],
-      [theme.colors.beige, theme.colors.primary, theme.colors.beige],
+      [theme.colors.primary, theme.colors.beige, theme.colors.primary],
     );
 
     return {
@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 8,
-    height: 50,
+    height: 44,
     width: 114 * 1.1,
-    marginTop: 45,
+    marginTop: 48,
   },
 });

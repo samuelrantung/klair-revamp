@@ -1,6 +1,5 @@
 import {SafeAreaView, StyleSheet} from 'react-native';
 import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import Router from './router';
 import {theme} from './assets/designSystem';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -15,9 +14,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <Router />
-      </NavigationContainer>
+      <Router />
     </SafeAreaView>
   );
 };

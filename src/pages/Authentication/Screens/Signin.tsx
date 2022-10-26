@@ -115,9 +115,9 @@ const Signin = () => {
             </View>
             <Gap height={'25%'} />
             <SocialSignInButton
-              onPress={() =>
-                handleGoogleSignIn().catch(e => console.log('error', e))
-              }
+              onPress={() => {
+                handleGoogleSignIn().catch(e => console.log('error', e));
+              }}
               type="google"
             />
             <Gap height={24} />

@@ -4,6 +4,7 @@ import {theme} from '../../../../assets/designSystem';
 import {TextInter} from '../../../../components';
 import Carousel from 'react-native-reanimated-carousel';
 import BankCard from './BankCard';
+import LinearGradient from 'react-native-linear-gradient';
 
 const colors = [
   '#26292E',
@@ -16,7 +17,11 @@ const colors = [
 
 const HeaderCard = () => {
   return (
-    <View style={[styles.container, theme.cardShadow]}>
+    <LinearGradient
+      start={{x: 0, y: 0}}
+      end={{x: 1, y: 0}}
+      colors={[theme.colors.primary, theme.colors.lightGold]}
+      style={[styles.container, theme.cardShadow]}>
       <View style={styles.walletInformationContainer}>
         <TextInter style={styles.walletName}>ALL WALLETS</TextInter>
         <TextInter style={styles.walletBalance}>IDR 138.000</TextInter>
@@ -28,7 +33,7 @@ const HeaderCard = () => {
         <Carousel
           vertical
           height={140}
-          loop
+          loop={false}
           snapEnabled={true}
           mode="parallax"
           modeConfig={{
@@ -41,7 +46,7 @@ const HeaderCard = () => {
           }}
         />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -63,10 +68,12 @@ const styles = StyleSheet.create({
   walletName: {
     fontSize: 20,
     fontFamily: theme.fonts.inter.medium,
+    color: theme.colors.fontLight,
   },
   walletBalance: {
     fontSize: 28,
     fontFamily: theme.fonts.inter.semiBold,
+    color: theme.colors.fontLight,
   },
   wealthButton: {
     color: theme.colors.fontGray,

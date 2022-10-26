@@ -1,16 +1,17 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {FC, ReactElement, useState} from 'react';
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
-import {Gap, TextInter} from '../../../../components';
 import {theme} from '../../../../assets/designSystem';
 import {Item} from './types';
 import CardBase from './CardBase';
+import HistoryCard from './cards/HistoryCard';
+import GoalsCard from './cards/GoalsCard';
 
 const defaultStack = ['goals', 'history'];
 
-const NUM_ITEMS = 2;
+const NUM_ITEMS = 15;
 
 const initialData: Item[] = [...Array(NUM_ITEMS)].map((d, index) => {
   return {
@@ -27,54 +28,35 @@ const renderCard = ({item, drag, isActive}: RenderItemParams<Item>) => {
     case defaultStack[0]: {
       return (
         <CardBase item={item} drag={drag} isActive={isActive}>
-          <View style={styles.goalsContainer}>
-            <View style={styles.goalsProgressContainer}></View>
-            <Gap width={28} />
-            <View style={styles.goalsTextContainer}>
-              <TextInter style={styles.goalsTitle}>TRANSPORTATION</TextInter>
-              <Gap height={8} />
-              <View style={styles.goalsTextRowContainer}>
-                <TextInter>Monthly Budget</TextInter>
-                <Gap height={8} />
-                <TextInter>IDR 500.000</TextInter>
-              </View>
-              <View style={styles.goalsTextRowContainer}>
-                <TextInter>Used This Month</TextInter>
-                <Gap height={8} />
-                <TextInter>IDR 500.000</TextInter>
-              </View>
-              <View style={styles.goalsTextRowContainer}>
-                <TextInter>Budget Balance</TextInter>
-                <Gap height={8} />
-                <TextInter>IDR 500.000</TextInter>
-              </View>
-            </View>
-          </View>
+          <GoalsCard />
         </CardBase>
       );
     }
     case defaultStack[1]: {
       return (
         <CardBase item={item} drag={drag} isActive={isActive}>
-          <Text style={styles.text}>{item.type} hehe</Text>
+          <HistoryCard />
         </CardBase>
       );
     }
   }
   return (
     <CardBase item={item} drag={drag} isActive={isActive}>
-      <Text style={styles.text}>{item.type} hehe</Text>
+      <Text style={styles.label}>{item.type} hehe</Text>
     </CardBase>
   );
 };
 
-const DragAndDropCard = () => {
+const DragAndDropCard: FC<{children: ReactElement}> = ({children}) => {
   const [data, setData] = useState(initialData);
-
   return (
     <DraggableFlatList
+      ListHeaderComponent={children}
       data={data}
-      onDragEnd={({data}) => setData(data)}
+      scrollEnabled
+      onDragEnd={({data}) => {
+        setData(data);
+      }}
       keyExtractor={item => item.key}
       renderItem={renderCard}
     />
@@ -84,27 +66,7 @@ const DragAndDropCard = () => {
 export default DragAndDropCard;
 
 const styles = StyleSheet.create({
-  goalsContainer: {
-    flexDirection: 'row',
-  },
-  goalsProgressContainer: {
-    backgroundColor: 'blue',
-    width: 88,
-    height: 88,
-    borderRadius: 50,
-  },
-
-  goalsTextContainer: {
-    flex: 1,
-  },
-  goalsTitle: {
-    fontSize: 16,
+  label: {
     color: theme.colors.fontDark,
-    fontFamily: theme.fonts.inter.medium,
-  },
-  goalsTextRowContainer: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'space-between',
   },
 });
