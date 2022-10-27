@@ -24,7 +24,7 @@ export const FAB_WIDTH = 40;
 export const FAB_HEIGHT = FAB_WIDTH;
 export const FAB_BORDER_RADIUS = FAB_WIDTH / 2;
 export const FAB_BACKGROUND_COLOR = theme.colors.primary;
-export const FAB_MARGIN = 30;
+export const FAB_MARGIN = 15;
 export const FAB_MARGIN_BOTTOM = 60;
 
 /**

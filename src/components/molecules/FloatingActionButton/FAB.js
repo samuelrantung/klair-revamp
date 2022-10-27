@@ -49,6 +49,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import ActionButtonIcon from '../../../assets/icons/action-button-icon.svg';
+import {theme} from '../../../assets/designSystem.js';
 
 const FAB = props => {
   /**
@@ -130,16 +131,28 @@ const FAB = props => {
       fabPositionX.value = ctx.startX + event.translationX;
       fabPositionY.value = ctx.startY + event.translationY;
     },
-    onEnd: _ => {
+    onEnd: (event, ctx) => {
       if (fabPositionX.value > -width / 2) {
+        // Right side of screen
         fabPositionX.value = withSpring(FAB_STARTING_POSITION, springConfig);
-        fabPositionY.value = withSpring(FAB_STARTING_POSITION, springConfig);
+        if (event.absoluteY < 640 && event.absoluteY > 35) {
+          fabPositionY.value = withSpring(ctx.startY + event.translationY);
+        } else {
+          // Out of bounds
+          fabPositionY.value = withSpring(FAB_STARTING_POSITION, springConfig);
+        }
       } else {
+        // Left side of screen
         fabPositionX.value = withSpring(
           -width + FAB_WIDTH + FAB_MARGIN * 2,
           springConfig,
         );
-        fabPositionY.value = withSpring(FAB_STARTING_POSITION, springConfig);
+        if (event.absoluteY < 640 && event.absoluteY > 35) {
+          fabPositionY.value = withSpring(ctx.startY + event.translationY);
+        } else {
+          // Out of bounds
+          fabPositionY.value = withSpring(FAB_STARTING_POSITION, springConfig);
+        }
       }
     },
   });
@@ -264,7 +277,12 @@ const FAB = props => {
           </Animated.View>
         )}
         <TapGestureHandler onHandlerStateChange={_onTapHandlerStateChange}>
-          <Animated.View style={[styles.fabButtonStyles, animatedFABStyles]}>
+          <Animated.View
+            style={[
+              styles.fabButtonStyles,
+              animatedFABStyles,
+              theme.cardShadow,
+            ]}>
             <ActionButtonIcon />
           </Animated.View>
         </TapGestureHandler>

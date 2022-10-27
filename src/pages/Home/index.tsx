@@ -15,8 +15,8 @@ import {theme} from '../../assets/designSystem';
 import DragAndDropCard from './components/DragAndDropCard';
 import HeaderCard from './components/HeaderCard';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import FAB from '../../components/atoms/FloatingActionButton/FAB';
-import SubButton from '../../components/atoms/FloatingActionButton/SubButton.js';
+import FAB from '../../components/molecules/FloatingActionButton/FAB';
+import SubButton from '../../components/molecules/FloatingActionButton/SubButton.js';
 
 const Home = () => {
   const navigation = useNavigation();
