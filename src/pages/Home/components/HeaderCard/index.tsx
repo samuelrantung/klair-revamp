@@ -5,17 +5,13 @@ import {TextInter} from '../../../../components';
 import Carousel from 'react-native-reanimated-carousel';
 import BankCard from './BankCard';
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch} from 'react-redux';
+import {changeWallet} from '../../../../redux/slices/wallet/walletSlice';
 
-const colors = [
-  '#26292E',
-  '#899F9C',
-  '#B3C680',
-  '#5C6265',
-  '#F5D399',
-  '#F1F1F1',
-];
+const wallet = ['all', 'mandiri', 'bni', 'dana', 'dompet'];
 
 const HeaderCard = () => {
+  const dispatch = useDispatch();
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
@@ -40,9 +36,16 @@ const HeaderCard = () => {
             parallaxScrollingScale: 0.9,
             parallaxScrollingOffset: 93,
           }}
-          data={colors}
+          data={wallet}
+          onSnapToItem={i => dispatch(changeWallet(wallet[i]))}
           renderItem={({index, animationValue}) => {
-            return <BankCard index={index} animationValue={animationValue} />;
+            return (
+              <BankCard
+                index={index}
+                animationValue={animationValue}
+                wallet={wallet[index]}
+              />
+            );
           }}
         />
       </View>

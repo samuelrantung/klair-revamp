@@ -1,13 +1,11 @@
 import {
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   View,
   Image,
-  FlatList,
   Alert,
+  TouchableWithoutFeedback,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import BurgerMenuIcon from '../../assets/icons/burger-menu-icon.svg';
 import {IMGKlairText} from '../../assets/images';
@@ -17,16 +15,31 @@ import HeaderCard from './components/HeaderCard';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import FAB from '../../components/molecules/FloatingActionButton/FAB';
 import SubButton from '../../components/molecules/FloatingActionButton/SubButton.js';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../redux';
+import {openModal} from '../../redux/slices/modal/modalSlice';
 
 const Home = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
+  const activeWallet = useSelector(
+    (state: RootState) => state.WalletReducer.name,
+  );
+
+  const handleMenuClick = () => {
+    dispatch(openModal());
+  };
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <View style={styles.headerLeftContainer}>
-          <BurgerMenuIcon />
-        </View>
+        <TouchableWithoutFeedback
+          style={styles.headerLeftContainer}
+          onPress={() => handleMenuClick()}>
+          <View>
+            <BurgerMenuIcon />
+          </View>
+        </TouchableWithoutFeedback>
         <View style={styles.headerMiddleContainer}>
           <Image source={IMGKlairText} style={styles.logo} />
         </View>

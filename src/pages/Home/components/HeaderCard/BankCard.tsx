@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {FC} from 'react';
 import Animated, {
   interpolateColor,
@@ -10,9 +10,10 @@ import {theme} from '../../../../assets/designSystem';
 interface ItemProps {
   index: number;
   animationValue: Animated.SharedValue<number>;
+  wallet: string;
 }
 
-const BankCard: FC<ItemProps> = ({index, animationValue}) => {
+const BankCard: FC<ItemProps> = ({index, animationValue, wallet}) => {
   const maskStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
       animationValue.value,
@@ -28,7 +29,7 @@ const BankCard: FC<ItemProps> = ({index, animationValue}) => {
     <Animated.View
       pointerEvents="none"
       style={[styles.bankCardContainer, maskStyle]}>
-      <TextInter>{index}</TextInter>
+      <TextInter>{wallet}</TextInter>
     </Animated.View>
   );
 };

@@ -3,6 +3,9 @@ import React, {useEffect} from 'react';
 import Router from './router';
 import {theme} from './assets/designSystem';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {Provider} from 'react-redux';
+import {store} from './redux';
+import Modal from './components/molecules/Modal';
 
 const App = () => {
   useEffect(() => {
@@ -13,9 +16,12 @@ const App = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Router />
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView style={styles.container}>
+        <Router />
+        <Modal />
+      </SafeAreaView>
+    </Provider>
   );
 };
 
